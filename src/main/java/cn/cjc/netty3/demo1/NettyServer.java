@@ -11,10 +11,12 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 /**
+ * 启动以后用telnet localhost 8080来访问
+ *
  * @author chenjc
  * @since 2017-06-08
  */
-public class DiscardServer {
+public class NettyServer {
 
     public static void main(String[] args) {
         ChannelFactory factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
@@ -22,7 +24,7 @@ public class DiscardServer {
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             @Override
             public ChannelPipeline getPipeline() throws Exception {
-                return Channels.pipeline(new DiscardServerHandler());
+                return Channels.pipeline(new EchoServerHandler());
             }
         });
         bootstrap.setOption("child.tcpNoDelay", true);
