@@ -1,12 +1,9 @@
 package cn.cjc.netty3.demo2;
 
-import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-
-import java.util.Date;
 
 /**
  * @author chenjc
@@ -16,9 +13,8 @@ public class TimeClientHandler extends SimpleChannelHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-        ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
-        long seconds = buffer.readInt() * 1000L;
-        System.out.println(new Date(seconds));
+        UnixTime unixTime = (UnixTime) e.getMessage();
+        System.out.println(unixTime);
         e.getChannel().close();
     }
 
