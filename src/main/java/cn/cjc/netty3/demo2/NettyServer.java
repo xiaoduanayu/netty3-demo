@@ -1,9 +1,11 @@
 package cn.cjc.netty3.demo2;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.channel.*;
+import org.jboss.netty.channel.ChannelFactory;
+import org.jboss.netty.channel.ChannelPipeline;
+import org.jboss.netty.channel.ChannelPipelineFactory;
+import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.ChannelGroupFuture;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
@@ -32,12 +34,16 @@ public class NettyServer {
         bootstrap.setOption("child.tcpNoDelay", true);
         bootstrap.setOption("child.keepAlive", true);
         bootstrap.bind(new InetSocketAddress(8080));
-        Channel channel = bootstrap.bind(new InetSocketAddress(8080));
-        allChannels.add(channel);
-        waitForShutdownCommand();
-        ChannelGroupFuture future = allChannels.close();//关闭全部连接
-        future.awaitUninterruptibly();//等待连接全部关闭事件来唤醒main线程，速度比较快
-        factory.releaseExternalResources();
+
+        /**
+         * 在某种条件下需要关闭服务端时请打开以下代码
+         Channel channel = bootstrap.bind(new InetSocketAddress(8080));
+         allChannels.add(channel);
+         waitForShutdownCommand();
+         ChannelGroupFuture future = allChannels.close();//关闭全部连接
+         future.awaitUninterruptibly();//等待连接全部关闭事件来唤醒main线程，速度比较快
+         factory.releaseExternalResources();
+         **/
     }
 
     private static void waitForShutdownCommand() {
